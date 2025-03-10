@@ -20,8 +20,8 @@ public class GreetingResource {
     @Produces(MediaType.TEXT_PLAIN)
     public Multi<Long> streamUserCount() {
         return Multi.createFrom().ticks().every(Duration.ofSeconds(1))
-                .onOverflow().drop()
-                .onItem().transformToUniAndConcatenate(
+                .onItem().invoke(() -> Log.info("This is a test log"))
+                .onItem().transformToUniAndMerge(
                         tick -> User.count())
                 .log();
     }
